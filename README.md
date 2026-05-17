@@ -1,113 +1,138 @@
-# Badan Warisan Malaysia - Membership App
+# Badan Warisan Membership PWA
 
-![Project Status](https://img.shields.io/badge/Status-Active-success)
-![React](https://img.shields.io/badge/React-18-blue)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)
-![Vite](https://img.shields.io/badge/Vite-6.x-purple)
-![Supabase](https://img.shields.io/badge/Supabase-Auth_&_DB-47C16E)
+A mobile-first React and Supabase membership portal prototype for registration, authentication, profiles, events, tickets, and heritage-community engagement.
 
-## Overview
-A responsive progressive web application (PWA) designed for **Badan Warisan Malaysia** (Malaysia Heritage Trust) to manage membership operations. The application digitizes the membership experience, allowing users to securely authenticate, manage their profiles, and engage with heritage initiatives seamlessly across web and mobile browsers.
+## Why I Built This
 
-## Main Features
-- **Secure Authentication**: End-to-end email and password authentication powered by Supabase.
-- **Member Dashboard**: Personalized dashboard for managing membership profiles.
-- **Responsive Layout**: Designed mobile-first using Tailwind CSS, scaling cleanly for desktop and tablet users.
-- **Accessible UI**: Fully accessible interactive components built with Radix UI Primitives.
-- **Optimized Performance**: Lightning-fast build times and hot module replacement driven by Vite.
+Membership organizations need a smoother way to onboard members, keep profile data up to date, manage events, and provide digital membership experiences. This project explores how a heritage-focused organization could digitize common membership workflows through a responsive web app backed by Supabase.
+
+The repository is framed as a portfolio-ready PWA prototype, not as a claim that the system is currently deployed in production for Badan Warisan Malaysia.
+
+## Features
+
+- Email/password authentication using Supabase Auth.
+- Sign-up, login, logout, and protected member experience.
+- Member profile and address completion flows.
+- Membership registration, renewal, success, and digital card screens.
+- Event listing, event details, registration, ticket, and payment-selection flows.
+- Donation and donation-history screens.
+- Community wall, heritage passport, journal, leaderboard, and FAQ-related UI.
+- Admin QR/scanner screen for ticket or membership validation concepts.
+- Reusable UI primitives built with Radix-style components.
+- Mobile-first layout with Tailwind CSS.
+- Safe `.env.example` for Supabase and Google Maps configuration.
 
 ## Tech Stack
-- **Frontend Framework**: React 18, TypeScript, Vite
-- **Styling & UI**: Tailwind CSS v4, PostCSS, Radix UI (Headless components)
-- **Icons**: Lucide React
-- **Backend & Database**: Supabase (PostgreSQL Auth & User Metadata)
-- **Form Handling**: React Hook Form
-- **Data Visualization**: Recharts
 
----
+- **Frontend:** React, TypeScript, Vite
+- **Styling:** Tailwind CSS, PostCSS
+- **UI components:** Radix UI primitives, custom reusable components
+- **Backend / Auth:** Supabase Auth and Supabase client
+- **Database:** Supabase/PostgreSQL schema migration file included
+- **Forms:** React Hook Form
+- **Charts / UI data:** Recharts
+- **Utilities:** Lucide React, QR-code-related libraries, HTML5 QR code scanning library
 
-## 📸 Screenshots
-*(Placeholder for project screenshots - add them in `./docs` and link them here)*
-> **1. Login Screen** | **2. User Profile Dashboard**
+## Architecture / System Design
 
----
+```text
+React PWA
+  -> AuthContext
+  -> Supabase client
+  -> Supabase Auth / PostgreSQL
 
-## 🚀 Quick Start & Setup
-
-### Prerequisites
-- [Node.js](https://nodejs.org/en/) (v18+ recommended)
-- [npm](https://www.npmjs.com/) or `pnpm`
-- A [Supabase](https://supabase.com/) account for database functionality
-
-### 1. Clone the Repository
-```bash
-git clone https://github.com/your-username/badan-warisan-membership.git
-cd badan-warisan-membership
+Screens and workflows
+  -> membership registration
+  -> profile and address completion
+  -> events, tickets, donation, community, admin scanner
 ```
 
-### 2. Install Dependencies
-```bash
-npm install
-```
+- **Frontend:** `src/App.tsx` coordinates the main screen flow, while feature screens live in `src/components/`.
+- **Backend/API:** `src/lib/supabase.ts` initializes the Supabase client from Vite environment variables.
+- **Authentication:** `src/contexts/AuthContext.tsx` manages session state, sign-in, sign-up, profile updates, address completion, phone OTP hooks, and sign-out.
+- **Database/storage:** `supabase_migration_memberships_v5_complete.sql` documents the intended Supabase/PostgreSQL schema. The app also uses Supabase user metadata for profile-related values.
+- **Deployment:** The app is a Vite frontend and can be deployed to static hosting, but Supabase environment variables must be configured on the host.
+- **External services:** Real payment processing and production SMS/OTP setup require provider configuration outside this repo.
 
-### 3. Environment Variables
-Copy the example environment file and insert your Supabase credentials:
-```bash
-cp .env.example .env
-```
-Update your `.env` with:
-```env
-VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key
-```
+## My Contributions
 
-### 4. Supabase Setup
-- Create a new project in your Supabase dashboard.
-- Enable **Email Authentication**.
-- Profile data (name, phone) is handled directly by `user_metadata` without the need for complex SQL migrations.
-- *(For custom tables, see `DATABASE_SETUP.md`)*.
+- Built the React/TypeScript membership portal structure and major user flows.
+- Implemented Supabase client setup and auth context handling.
+- Added profile, address, membership, event, ticket, donation, and admin scanner screens.
+- Organized reusable UI components and service modules.
+- Added Supabase setup documentation and a migration file for the intended database structure.
+- Added safe environment-variable documentation without exposing real credentials.
 
-### 5. Run Locally
-```bash
-npm run dev
-```
-Navigate to `http://localhost:3000` to view the application.
+## What I Learned
 
----
+- How to structure a larger frontend around feature screens, shared UI primitives, and auth context state.
+- How Supabase Auth, user metadata, and database tables can support membership workflows.
+- Why documentation should clearly separate implemented prototype behavior from production services such as payments and SMS.
+- How to make a domain-specific app read as a real product instead of a generic CRUD demo.
 
-## 📂 Folder Structure
+## Screenshots / Demo
 
-```
-.
-├── src/
-│   ├── assets/       # Static images and icons
-│   ├── components/   # Reusable UI components and specific screens (e.g. LoginScreen)
-│   ├── contexts/     # React context providers (AuthContext)
-│   ├── lib/          # Utilities and Supabase initialization clients
-│   ├── services/     # API request structures and services
-│   ├── styles/       # Global CSS and Tailwind directives
-│   └── types/        # TypeScript interfaces and type definitions
-├── .env.example      # Environment variable template
-├── vite.config.ts    # Vite bundler configuration
-```
+No screenshots are currently tracked in this repository.
 
-## Target Users / Use Cases
-- **BWM Members**: Existing members needing digital access to update their contact details, renew memberships, or review latest initiatives.
-- **BWM Administrators**: Require a scalable, secure backend (Supabase) to track registrations, manage updates, and ensure member privacy.
-- **Public Users**: People looking to join the heritage trust, allowing a seamless onboarding and signup sequence.
+Evidence to add later:
 
-## Current Limitations
-- Authentication currently relies on Email/Password. OAuth providers (Google, Apple) have not yet been enabled.
-- Web-based implementation mimics the mobile experience but is not currently wrapped natively (e.g., React Native/Capacitor).
-- Offline capabilities (Service Workers) are limited natively.
+- `docs/screenshots/login.png`
+- `docs/screenshots/member-dashboard.png`
+- `docs/screenshots/membership-card.png`
+- `docs/screenshots/event-registration.png`
+- `docs/screenshots/admin-scanner.png`
+- Short mobile walkthrough video.
+
+## Setup
+
+1. Clone the repository.
+
+   ```bash
+   git clone https://github.com/Jason421412/badan-warisan-membership-pwa.git
+   cd badan-warisan-membership-pwa
+   ```
+
+2. Install dependencies.
+
+   ```bash
+   npm install
+   ```
+
+3. Create a local environment file from the safe example.
+
+   ```bash
+   cp .env.example .env
+   ```
+
+4. Add your own Supabase project values.
+
+   ```env
+   VITE_SUPABASE_URL=https://your-project.supabase.co
+   VITE_SUPABASE_ANON_KEY=your-anon-key
+   VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
+   ```
+
+5. Configure Supabase.
+
+   - Create a Supabase project.
+   - Enable email/password authentication.
+   - Review `docs/SUPABASE_SETUP.md`.
+   - Apply or adapt `supabase_migration_memberships_v5_complete.sql` only after checking it against your Supabase project.
+
+6. Run the development server.
+
+   ```bash
+   npm run dev
+   ```
+
+7. Open the local URL shown by Vite.
 
 ## Future Improvements
-- [ ] Incorporate PWA properties to allow native "Install to Home Screen" prompts on mobile OS.
-- [ ] Build administrative dashboard routes using Supabase Row Level Security (RLS) rules.
-- [ ] Replace local asset hosting with a dedicated CDN.
 
-## License
-Distributed under the MIT License. See `LICENSE` for more information.
-
-## Author
-Jason Xu Jiachen
+- Add production-ready Row Level Security policies and document them clearly.
+- Add screenshots and a short demo video.
+- Add form validation tests and auth-flow tests.
+- Replace prototype payment screens with real provider integration only if credentials and backend handling are implemented safely.
+- Add admin role separation and route-level access control.
+- Add CI for type-checking, linting, and build verification.
+- Remove unused dependencies and split large UI flows into smaller route-based modules.
